@@ -1,0 +1,83 @@
+{% extends "adminindex.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .find_container{
+        width:60%;
+        margin: auto;
+        margin-top: 30px;
+        padding: 20px;
+        border: 1px solid rgb(236, 63, 63);
+        border-radius: 20px;
+    }
+    .find_container input{
+        width:100%;
+        padding:6px;
+        border: .5px solid gray;
+    }
+    .find_container {
+        color:white !important;
+    }
+    label{
+        color:rgb(43, 41, 41) !important;
+    }
+    .find_container{
+        color: rgb(43, 41, 41) !important;
+    }
+</style>
+
+  <!-- slider section -->
+    <!-- <section class="slider_section "> -->
+      <div class="container ">
+       
+        <div class="find_container mb-5">
+          <div class="container">
+
+            <div class="row">
+              <div class="col">
+                <form method="post">
+                    {% csrf_token %}
+                  <div class="form-row ">
+                    <div class="detail-box col-lg-12">
+                        <h1>
+                          
+                      Add Fuel Stock
+            <h6 class="text-danger">{{form.errors}}</h6>
+
+                          
+                        </h1>
+                        
+                        <br><br>
+                      </div>
+                  {% for field in form  %}
+                  
+                    <div class="form-group col-lg-6">
+                    {{field.label}}: <br>
+                    {{field}}
+                    </div>
+                  {% endfor %}
+                    
+                    
+                    <div class="form-group col-lg-12 text-center">
+
+                      <div class="btn-box text-center align-center">
+                        <button type="submit" class="btn btn-info ">Add</button>
+                      </div>
+                      <br>
+                      
+           
+                    </div>
+                    
+                     
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- </section> -->
+    <!-- end slider section -->
+  
+
+{% endblock %}

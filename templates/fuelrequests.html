@@ -1,0 +1,215 @@
+{% extends 'Index.html' %}
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+    .items{
+        padding:20px;
+
+    }
+    .requestbox{
+        padding: 10px;
+        border: 1px solid gray;
+        border-radius: 10px;
+
+    }
+    #map {
+            height: 600px;
+        }
+</style>
+<div class="container mt-5 mb-5">
+    <div class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="items requestbox">
+                    <h3 class="text-info" style="font-size: 30px;">Request Fuel</h3>
+
+                    <form method="POST" >
+                        {% csrf_token %}
+                        <label for="">Select Fuel Type</label>
+                        <select name="type" class="form-control " id="" required style="background-color: lightblue;">
+                            <option value="" selected disabled></option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="LPG">LPG</option>
+                        </select>
+                        <br><br>
+                        <label for="">Quantity in liters</label>
+                        <input type="number" name="qunty" class="form-control" required >
+                        <br>
+                        <label for="">Name</label>
+                        <input type="text" name="name" class="form-control" required>
+                        <br>
+                        <label for="">Delivery Loaction</label>
+                        <input type="text" name="location" id="myaddress" class="form-control" required>
+                        <br>
+                        <label for="">Latitude</label>
+                        <input type="Number" name="lat"  readonly id="lat"  class="form-control">
+                        <br>
+                        <label for="">Longitude</label>
+                        <input type="Number" name="log"  readonly id="log"  class="form-control">
+                        <br>
+                        <label for="">Phone Number</label>
+                        <br>
+                        <input type="number" class="form-control" name="phonenumber" id="phonenumber" placeholder="Phone Number" oninput="validatePhoneNumber()">
+                <br>
+                <span id="phonenumberError" class="error text-danger"></span><br>
+                        <a onclick="fetchGeolocationDataAdd()"><span class="text-primary"><i class="bi bi-geo"></i> Use My Location</span></a>
+                        <br><br>
+                        <button type="submit" class="btn btn-dark btn-sm">Request Fuel</button>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="items">
+                    <div id="map"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+
+async function fetchGeolocationData() {
+        try {
+            // URL of the IP Geolocation API
+            const apiUrl = 'https://ipgeolocation.abstractapi.com/v1/?api_key=32d8341ec1da4e57aba06d2b9b004c50';
+
+            // Make a GET request to the API
+            const response = await fetch(apiUrl);
+
+            // Check if the response is successful
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Parse the JSON data from the response
+            const data = await response.json();
+
+            // Display the geolocation data in the HTML element
+            const dataElement = document.getElementById('geolocation-data');
+            const val = `
+                <p>IP Address: ${data.ip_address}</p>
+                <p>Country: ${data.country}</p>
+                <p>Region: ${data.region}</p>
+                <p>City: ${data.city}</p>
+                <p>Latitude: ${data.latitude}</p>
+                <p>Longitude: ${data.longitude}</p>
+            `;
+            const address = data.city +", " + data.region +", " +data.country
+            console.log(data)
+            var map = L.map('map').setView([data.latitude, data.longitude], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            L.marker([data.latitude, data.longitude]).addTo(map)
+                .bindPopup(address)
+                .openPopup();
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    // Call the function to fetch data when the page loads
+    window.onload = fetchGeolocationData;
+    // var map = L.map('map').setView([9.931233, 76.267303], 13);
+
+    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // }).addTo(map);
+
+    // L.marker([9.931233, 76.267303]).addTo(map)
+    //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+    //     .openPopup();
+
+    // Function to fetch data from the API
+
+    async function fetchGeolocationDataAdd() {
+        try {
+            // URL of the IP Geolocation API
+            const apiUrl = 'https://ipgeolocation.abstractapi.com/v1/?api_key=32d8341ec1da4e57aba06d2b9b004c50';
+
+            // Make a GET request to the API
+            const response = await fetch(apiUrl);
+
+            // Check if the response is successful
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Parse the JSON data from the response
+            const data = await response.json();
+
+            // Display the geolocation data in the HTML element
+            const dataElement = document.getElementById('geolocation-data');
+            const val = `
+                <p>IP Address: ${data.ip_address}</p>
+                <p>Country: ${data.country}</p>
+                <p>Region: ${data.region}</p>
+                <p>City: ${data.city}</p>
+                <p>Latitude: ${data.latitude}</p>
+                <p>Longitude: ${data.longitude}</p>
+            `;
+
+            const address = data.city +", " + data.region +", " +data.country
+            console.log(val) 
+            document.getElementById("myaddress").value = address
+            document.getElementById("lat").value = data.latitude
+            document.getElementById("log").value = data.longitude
+
+            var map = L.map('map').setView([data.latitude, data.longitude], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            L.marker([data.latitude, data.longitude]).addTo(map)
+                .bindPopup(address)
+                .openPopup();
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+   
+</script>
+<script>
+    function validatePhoneNumber() {
+        const phoneNumberInput = document.getElementById('phonenumber');
+        const phoneNumberError = document.getElementById('phonenumberError');
+        const phoneNumber = phoneNumberInput.value.trim();
+
+        // Regular expression to match exactly 10 digits
+        const phoneNumberPattern = /^\d{10}$/;
+
+        if (phoneNumberPattern.test(phoneNumber)) {
+            phoneNumberError.textContent = ''; // Clear the error message
+        } else {
+            phoneNumberError.textContent = 'Please enter a valid 10-digit phone number.';
+        }
+    }
+
+    function validateForm() {
+        // Add additional form validation logic as needed
+        const phoneNumber = document.getElementById('phonenumber').value.trim();
+        const phoneNumberPattern = /^\d{10}$/;
+
+        if (!phoneNumberPattern.test(phoneNumber)) {
+            alert('Please enter a valid 10-digit phone number.');
+            return false; // Prevent form submission
+        }
+
+        // Add more validation logic for other fields if necessary
+
+        return true; // Allow form submission if all validations pass
+    }
+</script>
+{% endblock %}

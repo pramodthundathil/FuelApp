@@ -1,0 +1,73 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .find_container{
+        width:60%;
+        margin: auto;
+        margin-top: 30px;
+        padding: 20px;
+        border: 1px solid rgb(236, 63, 63);
+        border-radius: 20px;
+    }
+    .find_container {
+        color:white !important;
+    }
+</style>
+
+  <!-- slider section -->
+    <!-- <section class="slider_section "> -->
+      <div class="container ">
+        <div class="row">
+          <div class="col-lg-7 col-md-8 mx-auto">
+          </div>
+        </div>
+        <div class="find_container mb-5">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <form method="post">
+                    {% csrf_token %}
+                  <div class="form-row ">
+                    <div class="detail-box col-lg-12">
+                        <h1>
+                          
+                          Signin
+                          {% for message in messages %}
+                          <h6 style="color:red;text-align:center">{{message}}</h6> 
+                           {% endfor %}
+                          
+                        </h1>
+                        <br><br>
+                      </div>
+                  
+                    <div class="form-group col-lg-6">
+                      <input type="text" class="form-control" id="inputPatientName" name="uname" placeholder="Username" required>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <input type="password" class="form-control" id="inputPatientName" name="pswd" placeholder="Password" required>
+                    </div>
+                    
+                    <div class="form-group col-lg-12 text-center">
+
+                      <div class="btn-box text-center align-center">
+                        <button type="submit" class="btn btn-info">Login</button>
+                            <br><br>
+                        <span class="text-dark">Dont have an account click<a class="text-primary" href="{%url 'SignUp' %}"> Here</a></span>
+                        <br><br>
+
+                      </div>
+                    </div>
+                    
+                     
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end slider section -->
+
+{% endblock %}

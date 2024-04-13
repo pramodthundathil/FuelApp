@@ -1,0 +1,64 @@
+{% extends "adminindex.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .content{
+        width:90%;
+        margin: auto;
+    }
+</style>
+
+<div class="container">
+    <div class="content mt-5 mb-5">
+        <h2> Fuel Stock</h2>
+        {% for message in messages %}
+                          <h6 style="color:red;text-align:center">{{message}}</h6> 
+                           {% endfor %}
+
+<table class="table">
+    <tr>
+        <th>Stock</th>
+        <th>Fuel</th>
+        <th>Date</th>
+        <th>Threshold Alert</th>
+        
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    {% for s in stock %}
+    <tr>
+        <td>{{s.stock}}</td>
+        <td>{{s.fuel_category}}</td>
+        <td>{{s.date}}</td>
+        <td>
+            {% if s.stock < 1000 and s.stock > 0 %}
+            <span class="badge bg-warning">Please Arrange bo make Refill</span>
+            {% elif s.stock > 999 %}
+            <span class="badge bg-success">Sufficient stock</span>
+            {% else %}
+            <span class="badge bg-danger">Stock Empty</span>
+
+
+            {% endif %}
+        </td>
+        
+        <td>
+            <form action="{%url 'UpdateStock' s.id %}" method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input  class="form-control" type="number" name="stock" placeholder="stock" >
+                    <button class="btn btn-outline-info" type="submit" id="button-addon2">Update</button>
+                  </div>
+                
+
+            </form>
+        
+        </td>
+        <td><a href="{%url 'deleteStock' s.id %}" class="btn btn-danger btn-sm">delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+</div>
+
+{% endblock %}

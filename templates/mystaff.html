@@ -1,0 +1,41 @@
+{% extends "adminindex.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .content{
+        width:90%;
+        margin: auto;
+    }
+</style>
+
+<div class="container">
+    <div class="content mt-5 mb-5">
+        <h2>My Staff Details</h2>
+        {% for message in messages %}
+                          <h6 style="color:red;text-align:center">{{message}}</h6> 
+                           {% endfor %}
+
+<table class="table">
+    <tr>
+        <th>Staff Name</th>
+        <th>Staff Username</th>
+        <th>Email</th>
+        <th>last Login</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    {% for s in staff %}
+    <tr>
+        <td>{{s.first_name}}</td>
+        <td>{{s.username}}</td>
+        <td>{{s.email}}</td>
+        <td>{{s.last_login}}</td>
+        <td><a href="" class="btn btn-info btn-sm">Update</a></td>
+        <td><a href="{%url 'Deletestaff' s.id %}" class="btn btn-danger btn-sm">delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+</div>
+
+{% endblock %}

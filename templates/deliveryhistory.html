@@ -1,0 +1,68 @@
+{% extends 'staffindex.html' %}
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+    .content-box {
+        width: 90%;
+        margin: auto;
+        padding: 10px;
+        border: 1px solid gray;
+
+    }
+</style>
+
+
+<div class="container mt-5 mb-5">
+    <div class="content">
+        <h4>Delivery History</h4>
+
+        {% for message in messages %}
+        <h6 style="color:red;text-align:center">{{message}}</h6>
+        {% endfor %}
+
+        <div class="row">
+            {% for fuel in fuelrequest %}
+
+            <div class="col-md-6 mt-4">
+
+                <div class="content-box">
+                    <h1>Fuel Type: <span class="text-danger">{{fuel.fuel}}</span></h1>
+                    <h3>Quantity: <span class="text-info"> {{fuel.qunty}} liters</span></h3>
+                    <h4>Customer Name <span class="text-danger">{{fuel.name}}</span></h4>
+                    <p>Date: {{fuel.date_time}}</p>
+                    <p>Location: {{fuel.location}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="" class="text-primary"><i class="bi bi-geo"></i>View in Map</a></p>
+                    <p>Phone: {{fuel.phone}}</p>
+
+
+                    <h4>Status {{fuel.delivery_status}} <span class="text-warnig"></span></h4>
+                    {% if fuel.completion_status == False %}
+
+                    {% if fuel.status == True %}
+                    <span class="badge bg-success">You Request is approved delivery in progress</span>
+                    {% else %}
+                    <span class="badge bg-warning">You Request is not yet approved in progress</span>
+                    {% endif %}
+                    {% else %}
+                    <span class="badge bg-success">This Order was delivered</span>
+                    {% endif %}
+                    <br><br>
+                    {% if fuel.completion_status == False %}
+                    <a href="{%url 'OrderTaken' fuel.id %}" class="btn btn-info btn-sm">Take Order</a>
+                    <a href="{%url 'OrderDeliveryChange' fuel.id %}" class="btn btn-dark btn-sm">Delivery Started</a>
+                    <!-- <a href="" class="btn btn-dark btn-sm">On the way</a> -->
+                    <a href="{%url 'OrderDelivered' fuel.id %}" class="btn btn-success btn-sm">Delivered</a>
+                    {% endif%}
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

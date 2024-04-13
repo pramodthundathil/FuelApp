@@ -1,0 +1,56 @@
+{% extends 'adminindex.html' %}
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<style>
+    .content-box {
+        width: 90%;
+        margin: auto;
+        padding: 10px;
+        border: 1px solid gray;
+
+    }
+</style>
+
+
+<div class="container mt-5 mb-5">
+    <div class="content">
+        <h4>Fuel Orders And Status</h4>
+
+        {% for message in messages %}
+        <h6 style="color:red;text-align:center">{{message}}</h6>
+        {% endfor %}
+
+        <div class="row">
+            {% for fuel in fuelrequest%}
+
+            <div class="col-md-6 mt-4">
+
+                <div class="content-box">
+                    <h1>Fuel Type: <span class="text-danger">{{fuel.fuel}}</span></h1>
+                    <h3>Quantity: <span class="text-info"> {{fuel.qunty}} liters</span></h3>
+                    <p>Date: {{fuel.date_time}}</p>
+                    <p>Location: {{fuel.location}}</p>
+                    <h4>Status {{fuel.delivery_status}} <span class="text-warnig"></span></h4>
+                    {% if fuel.completion_status == False %}
+
+                    {% if fuel.status == True %}
+                    <span class="badge bg-success">You Request is approved delivery in progress</span>
+                    {% else %}
+                    <span class="badge bg-warning">You Request is not yet approved in progress</span>
+                    {% endif %}
+                    {% else %}
+                    <span class="badge bg-success">This Order was delivered</span>
+                    {% endif %}
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

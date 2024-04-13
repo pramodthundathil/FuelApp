@@ -1,0 +1,40 @@
+{% extends "adminindex.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .content{
+        width:90%;
+        margin: auto;
+    }
+    .items{
+        width:80%;
+        margin: auto;
+        border: 1px solid gray;
+        padding: 20px;
+    }
+</style>
+
+<div class="container">
+    <div class="content mt-5 mb-5">
+        <div class="items">
+            <h3>Price Update</h3>
+            <form method="post">
+                {% csrf_token %}
+                <label for="">Petrol Price</label><br>
+                <input type="text" class="form-control" name="petrol" required value="{{price.Petrol}}">
+                <br><br>
+                <label for="">Diesel Price</label><br>
+                <input type="text" class="form-control" name="diesel" required value="{{price.Diesel}}">
+                <br><br>
+                <label for="">LPG Price</label><br>
+                <input type="text" class="form-control" name="lpg" required value="{{price.LPG}}">
+                <br><br>
+                <button type="submit" class="btn btn-info">Update</button>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'staffindex.html' %}
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<style>
+    .items{
+        width:60%;
+        margin: auto;
+    }
+    #map {
+            height: 400px;
+        }
+</style>
+
+<div class="container mt-5 mb-5">
+    <div class="content">
+        <div class="items">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    
+    var map = L.map('map').setView([{{lat}}, {{log}}], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+L.marker([{{lat}}, {{log}}]).addTo(map)
+    .bindPopup(address)
+    .openPopup();
+</script>
+{% endblock %}
